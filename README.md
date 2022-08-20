@@ -1,8 +1,6 @@
 # akros2_drive
 Package to drive the AKROS2 robot
 
-Tested using ROS2 Galactic
-
 * Uses the [ds4_driver](https://github.com/naoki-mizuno/ds4_driver) package with nodes to publish the status of the PS4 controller's buttons/joysticks ```ds4_driver```, and publishes Twist messages based on user-defined configuration ```ds4_twist```.
 * Implements the ```ds4_feedback``` node, which subscribes to the status, and publishes [Mode](https://github.com/adityakamath/akros2_msgs/blob/master/msg/Mode.msg) messages to indicate ```stop```, ```auto```, or ```teleop```. It sets the LED colors on the PS4 controller accordingly. It also publishes the ```stop``` signal as a separate boolean message.
 * Implements the ```twist_mixer``` node that subscribes to the Mode messages from ```ds4_feedback```, the Twist messages from ```ds4_twist``` and Twist messages from an external autonomous node. Based on the mode, it then publishes either the Twist message from the PS4 controller, or the autonomous node, or zero values if the emergency stop is pressed.
