@@ -16,48 +16,39 @@ import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-from launch.conditions import LaunchConfigurationEquals
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
 
 def generate_launch_description():
     
     ds4_driver_config_path = PathJoinSubstitution(
-        [FindPackageShare("ds4_driver"), "config", "params.yaml"]
-    )
+        [FindPackageShare("ds4_driver"), "config", "params.yaml"])
     
     ds4_twist_config_path = PathJoinSubstitution(
-        [FindPackageShare("akros2_drive"), "config", "ds4_twist_params.yaml"]
-    )
+        [FindPackageShare("akros2_drive"), "config", "ds4_twist_params.yaml"])
     
     twist_mux_topics_config_path = PathJoinSubstitution(
-        [FindPackageShare("akros2_drive"), "config", "twist_mux_topics.yaml"]
-    )
+        [FindPackageShare("akros2_drive"), "config", "twist_mux_topics.yaml"])
     
     twist_mux_locks_config_path = PathJoinSubstitution(
-        [FindPackageShare("akros2_drive"), "config", "twist_mux_locks.yaml"]
-    )
+        [FindPackageShare("akros2_drive"), "config", "twist_mux_locks.yaml"])
     
     return LaunchDescription([
         DeclareLaunchArgument(
             name='namespace',
             default_value='akros2',
-            description='Namespace of the robot'
-        ),
+            description='Namespace of the robot'),
         
         DeclareLaunchArgument(
             name='port_addr',
             default_value='/dev/ttyUSB_TEENSY',
-            description='Serial port of the microcontroller'
-        ),
+            description='Serial port of the microcontroller'),
         
         DeclareLaunchArgument(
             name='ps4_addr',
             default_value='84:30:95:2C:67:7C',
-            description='MAC address of the PS4 controller'
-        ),
+            description='MAC address of the PS4 controller'),
 
-        
         Node(
             package='ds4_driver',
             executable='ds4_driver_node.py',
@@ -67,8 +58,7 @@ def generate_launch_description():
                 {'use_standard_msgs': 'false'},
                 {'autorepeat_rate': 0.0},
                 ds4_driver_config_path,
-            ],
-        ),
+            ]),
         
         Node(
             package='ds4_driver',
@@ -80,8 +70,7 @@ def generate_launch_description():
             ],
             remappings=[
                 ('/cmd_vel', ['/', LaunchConfiguration('namespace'), '/joy_vel']),
-            ]
-        ),
+            ]),
         
         Node(
             package='akros2_drive',
@@ -90,15 +79,13 @@ def generate_launch_description():
             remappings=[
                 ('/mode',   ['/', LaunchConfiguration('namespace'), '/mode']),
                 ('/e_stop', ['/', LaunchConfiguration('namespace'), '/e_stop']),
-            ]
-        ),
+            ]),
         
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
             name='ds4_to_imu',
-            arguments=['0', '0.05', '-0.01', '-1.5707', '0', '1.5707', 'ds4', 'ds4_imu']
-        ),
+            arguments=['0', '0.05', '-0.01', '-1.5707', '0', '1.5707', 'ds4', 'ds4_imu']),
         
         Node(
             package='akros2_drive',
@@ -109,8 +96,7 @@ def generate_launch_description():
                 ('/teleop_vel', ['/', LaunchConfiguration('namespace'), '/joy_vel']),
                 ('/auto_vel',   ['/', LaunchConfiguration('namespace'), '/nav_vel']),
                 ('/mix_vel',    ['/', LaunchConfiguration('namespace'), '/mix_vel']),
-            ]
-        ),
+            ]),
         
         Node(
             package='twist_mux',
@@ -125,14 +111,12 @@ def generate_launch_description():
                 ('/mix_vel',     ['/', LaunchConfiguration('namespace'), '/mix_vel']),
                 ('/key_vel',     ['/', LaunchConfiguration('namespace'), '/key_vel']),
                 ('/cmd_vel_out', ['/', LaunchConfiguration('namespace'), '/cmd_vel']),
-            ]
-        ),
+            ]),
         
         Node(
             package='micro_ros_agent',
             executable='micro_ros_agent',
             name='micro_ros_agent',
             output='screen',
-            arguments=['serial', '--dev', LaunchConfiguration("port_addr")]
-        )
+            arguments=['serial', '--dev', LaunchConfiguration("port_addr")])
     ])
