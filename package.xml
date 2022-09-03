@@ -3,8 +3,8 @@
 <package format="3">
   <name>akros2_drive</name>
   <version>0.0.0</version>
-  <description>Node to drive the AKROS2 robot</description>
-  <maintainer email="adityakamath@live.com">ubuntu</maintainer>
+  <description>Nodes to drive the AKROS2 robot</description>
+  <maintainer email="adityakamath@live.com">Aditya Kamath</maintainer>
   <license>Apache License 2.0</license>
     
   <exec_depend>ros2launch</exec_depend>
