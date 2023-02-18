@@ -24,8 +24,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'ds4_feedback = akros2_drive.ds4_feedback_node:main',
             'twist_mixer = akros2_drive.twist_mixer_node:main',
+            'joy_feedback = akros2_drive.joy_feedback_node:main',
         ],
     },
 )

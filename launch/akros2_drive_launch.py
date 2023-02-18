@@ -14,15 +14,19 @@
 
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, TextSubstitution
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
+from launch.conditions import IfCondition
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from ament_index_python.packages import get_package_share_directory
+import logging
 
 def generate_launch_description():
     
-    ds4_driver_config_path = PathJoinSubstitution(
-        [FindPackageShare("ds4_driver"), "config", "params.yaml"])
+    teleop_twist_joy_launch_path = PathJoinSubstitution(
+        [FindPackageShare('teleop_twist_joy'), 'launch', 'teleop-launch.py'])
     
     ds4_twist_config_path = PathJoinSubstitution(
         [FindPackageShare("akros2_drive"), "config", "ds4_twist_params.yaml"])
@@ -33,11 +37,21 @@ def generate_launch_description():
     twist_mux_locks_config_path = PathJoinSubstitution(
         [FindPackageShare("akros2_drive"), "config", "twist_mux_locks.yaml"])
     
+    joy_twist_config_dynamic_path = [get_package_share_directory('akros2_drive'), 
+                                     '/config/', 
+                                     LaunchConfiguration('joy_config'), 
+                                     '_twist_config.yaml']
+    
+    joy_mode_config_dynamic_path = [get_package_share_directory('akros2_drive'), 
+                                    '/config/', 
+                                    LaunchConfiguration('joy_config'), 
+                                    '_mode_config.yaml']
+    
     return LaunchDescription([
         DeclareLaunchArgument(
             name='namespace',
-            default_value='akros2',
-            description='Namespace of the robot'),
+            default_value='drive',
+            description='Namespace of the system'),
         
         DeclareLaunchArgument(
             name='port_addr',
@@ -45,57 +59,69 @@ def generate_launch_description():
             description='Serial port of the microcontroller'),
         
         DeclareLaunchArgument(
-            name='ps4_addr',
-            default_value='84:30:95:2C:67:7C',
-            description='MAC address of the PS4 controller'),
-
-        Node(
-            package='ds4_driver',
-            executable='ds4_driver_node.py',
-            name='ds4_driver',
-            parameters=[
-                {'device_addr': LaunchConfiguration('ps4_addr')},
-                {'use_standard_msgs': 'false'},
-                {'autorepeat_rate': 0.0},
-                ds4_driver_config_path,
-            ]),
+            name='twist',
+            default_value='true',
+            description='Enable Teleop Twist Joy'),
+        
+        DeclareLaunchArgument(
+            name='feedback',
+            default_value='true',
+            description='Enable AKROS2 Joy Feedback'),
+        
+        DeclareLaunchArgument(
+            name='agent',
+            default_value='true',
+            description='Enable Micro-ROS Agent'),
+        
+        DeclareLaunchArgument(
+            name='joy_config',
+            default_value='ps4',
+            description='Joystick Configuration: ps4, stadia, ps3'),
         
         Node(
-            package='ds4_driver',
-            executable='ds4_twist_node.py',
-            name='ds4_twist',
-            parameters=[
-                {'stamped': 'false'},
-                ds4_twist_config_path,
-            ],
+            condition=IfCondition(LaunchConfiguration('twist')),
+            package='joy',
+            executable='joy_node',
+            name='joy_node',
+            parameters=[{
+                'dev': '/dev/input/js0',
+                'deadzone': 0.3,
+                'autorepeat_rate': 20.0,
+            }],
+            arguments=["--ros-args", "--log-level", "ERROR"],
+        ),
+        
+        Node(
+            condition=IfCondition(LaunchConfiguration('twist')),
+            package='teleop_twist_joy',
+            executable='teleop_node',
+            name='joy_teleop',
+            parameters=[joy_twist_config_dynamic_path],
             remappings=[
                 ('/cmd_vel', ['/', LaunchConfiguration('namespace'), '/joy_vel']),
             ]),
-        
+
         Node(
+            condition=IfCondition(LaunchConfiguration('feedback')),
             package='akros2_drive',
-            executable='ds4_feedback',
-            name='ds4_feedback',
+            executable='joy_feedback',
+            name='joy_feedback',
+            parameters=[[TextSubstitution(text=os.path.join(get_package_share_directory('akros2_drive'), 'config', '')), 
+                                                   LaunchConfiguration('joy_config'), 
+                                                   TextSubstitution(text='_mode_config.yaml')]],
             remappings=[
-                ('/mode',   ['/', LaunchConfiguration('namespace'), '/mode']),
                 ('/e_stop', ['/', LaunchConfiguration('namespace'), '/e_stop']),
+                ('/mode', ['/', LaunchConfiguration('namespace'), '/mode'])
             ]),
-        
-        Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            name='ds4_to_imu',
-            arguments=['0', '0.05', '-0.01', '-1.5707', '0', '1.5707', 'ds4', 'ds4_imu']),
-        
+                
         Node(
             package='akros2_drive',
             executable='twist_mixer',
             name='twist_mixer',
+            namespace=LaunchConfiguration('namespace'),
             remappings=[
-                ('/mode',       ['/', LaunchConfiguration('namespace'), '/mode']),
-                ('/teleop_vel', ['/', LaunchConfiguration('namespace'), '/joy_vel']),
-                ('/auto_vel',   ['/', LaunchConfiguration('namespace'), '/nav_vel']),
-                ('/mix_vel',    ['/', LaunchConfiguration('namespace'), '/mix_vel']),
+                (['/', LaunchConfiguration('namespace'), '/teleop_vel'], ['/', LaunchConfiguration('namespace'), '/joy_vel']),
+                (['/', LaunchConfiguration('namespace'), '/auto_vel'], ['/', LaunchConfiguration('namespace'), '/nav_vel']),
             ]),
         
         Node(
@@ -114,6 +140,7 @@ def generate_launch_description():
             ]),
         
         Node(
+            condition=IfCondition(LaunchConfiguration('agent')),
             package='micro_ros_agent',
             executable='micro_ros_agent',
             name='micro_ros_agent',
