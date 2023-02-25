@@ -12,8 +12,8 @@ joy_feedback:
 #        rz: 3 # right joystick up-down
 #        r2: 4
 #        l2: 5
-#        left_right: 6 # right side buttons
-#        up_down: 7 # right side buttons
+#        left_right: 6 # left side buttons
+#        up_down: 7 # left side buttons
 #      buttons:
 #        cross: 0 # A in Stadia/PS3
 #        circle: 1 # B in Stadia/PS3
