@@ -118,10 +118,11 @@ def generate_launch_description():
             package='akros2_drive',
             executable='twist_mixer',
             name='twist_mixer',
-            namespace=LaunchConfiguration('namespace'),
             remappings=[
-                (['/', LaunchConfiguration('namespace'), '/teleop_vel'], ['/', LaunchConfiguration('namespace'), '/joy_vel']),
-                (['/', LaunchConfiguration('namespace'), '/auto_vel'], ['/', LaunchConfiguration('namespace'), '/nav_vel']),
+                (['/teleop_vel'], ['/', LaunchConfiguration('namespace'), '/joy_vel']),
+                (['/auto_vel'], ['/', LaunchConfiguration('namespace'), '/nav_vel']),
+                (['/mix_vel'], ['/', LaunchConfiguration('namespace'), '/mix_vel']),
+                (['/mode'], ['/', LaunchConfiguration('namespace'), '/mode']),
             ]),
         
         Node(
@@ -145,5 +146,6 @@ def generate_launch_description():
             executable='micro_ros_agent',
             name='micro_ros_agent',
             output='screen',
-            arguments=['serial', '--dev', LaunchConfiguration("port_addr")])
+            arguments=['serial', '--dev', LaunchConfiguration("port_addr")]
+        )
     ])

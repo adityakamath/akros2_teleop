@@ -15,7 +15,6 @@
 #!/usr/bin/env python3
 
 import rclpy
-import time
 from sensor_msgs.msg import Joy
 from akros2_msgs.msg import Mode
 from std_msgs.msg import Bool

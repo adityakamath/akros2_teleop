@@ -9,15 +9,11 @@
     
   <exec_depend>ros2launch</exec_depend>
   
-  <build_depend>rclpy</build_depend>
-  <build_depend>sensor_msgs</build_depend>
-  <build_depend>geometry_msgs</build_depend>
-  <build_depend>std_msgs</build_depend>
-    
-  <exec_depend>rclpy</exec_depend>
-  <exec_depend>sensor_msgs</exec_depend>
-  <exec_depend>geometry_msgs</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
+  <depend>rclpy</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>akros2_msgs</depend>
   
   <depend>joy</depend>
   <depend>teleop_twist_keyboard</depend>
