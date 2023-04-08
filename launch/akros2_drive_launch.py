@@ -55,7 +55,7 @@ def generate_launch_description():
         
         DeclareLaunchArgument(
             name='port_addr',
-            default_value='/dev/ttyUSB_TEENSY',
+            default_value='/dev/ttyTEENSY',
             description='Serial port of the microcontroller'),
         
         DeclareLaunchArgument(
@@ -85,8 +85,8 @@ def generate_launch_description():
             name='joy_node',
             parameters=[{
                 'dev': '/dev/input/js0',
-                'deadzone': 0.3,
-                'autorepeat_rate': 20.0,
+                'deadzone': 0.25,
+                'autorepeat_rate': 0.0,
             }],
             arguments=["--ros-args", "--log-level", "ERROR"],
         ),

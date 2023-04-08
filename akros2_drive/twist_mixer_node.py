@@ -15,12 +15,11 @@
 #!/usr/bin/env python3
 
 import rclpy
-import time
 from geometry_msgs.msg import Twist
 from akros2_msgs.msg import Mode
 
 class TwistMixer(object):
-    def __init__(self, node, auto_vel_topic='auto_vel', teleop_vel_topic='teleop_vel', mix_vel_topic = 'mix_vel', mode_topic='mode', timer_period=0.005):
+    def __init__(self, node, auto_vel_topic='auto_vel', teleop_vel_topic='teleop_vel', mix_vel_topic = 'mix_vel', mode_topic='mode', timer_period=0.01):
         self._node = node
         
         self._teleop = Twist()
@@ -58,14 +57,13 @@ class TwistMixer(object):
         self._auto = msg
 
     def cb_timer(self):
-        
         if self._mode.estop:
             self._mixed = self._zero
         else:
             if self._mode.auto_t:
-                self._mixed = self._auto
+                self._mixed = self._auto if self._auto else self._zero
             else:
-                self._mixed = self._teleop
+                self._mixed = self._teleop if self._teleop else self._zero
 
         self._pub_twist.publish(self._mixed)
         
