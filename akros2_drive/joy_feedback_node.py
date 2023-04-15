@@ -45,12 +45,12 @@ class JoystickHandler(object):
         """
         :type msg: Joy
         """
-        
-        if msg.buttons[self._estop_button] and not self._prev.buttons[self._estop_button]:
-            self._mode.estop = not self._mode.estop
+        if len(msg.buttons) >= max(self._estop_button, self._auto_button) + 1:
+            if msg.buttons[self._estop_button] and not self._prev.buttons[self._estop_button]:
+                self._mode.estop = not self._mode.estop
             
-        if msg.buttons[self._auto_button] and not self._prev.buttons[self._auto_button]:
-            self._mode.auto_t = not self._mode.auto_t
+            if msg.buttons[self._auto_button] and not self._prev.buttons[self._auto_button]:
+                self._mode.auto_t = not self._mode.auto_t
         
         if self._mode.estop: # STOP! - red
             self._mode.auto_t = False
