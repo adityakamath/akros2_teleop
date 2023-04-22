@@ -23,7 +23,7 @@ class JoystickHandler(object):
     def __init__(self, node, joy_topic='joy', mode_topic='mode', estop_lock_topic='e_stop'):
         self._node = node
         
-        self._prev = Joy()
+        self._prev = None
 
         self._mode = Mode()
         self._mode.estop  = False
@@ -45,12 +45,15 @@ class JoystickHandler(object):
         """
         :type msg: Joy
         """
-        if len(msg.buttons) >= max(self._estop_button, self._auto_button) + 1:
-            if msg.buttons[self._estop_button] and not self._prev.buttons[self._estop_button]:
-                self._mode.estop = not self._mode.estop
-            
-            if msg.buttons[self._auto_button] and not self._prev.buttons[self._auto_button]:
-                self._mode.auto_t = not self._mode.auto_t
+        if self._prev is None:
+            self._prev = msg
+            return
+    
+        if msg.buttons[self._estop_button] and not self._prev.buttons[self._estop_button]:
+            self._mode.estop = not self._mode.estop
+          
+        if msg.buttons[self._auto_button] and not self._prev.buttons[self._auto_button]:
+            self._mode.auto_t = not self._mode.auto_t
         
         if self._mode.estop: # STOP! - red
             self._mode.auto_t = False
