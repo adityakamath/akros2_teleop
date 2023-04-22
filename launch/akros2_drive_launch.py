@@ -69,11 +69,6 @@ def generate_launch_description():
             description='Enable AKROS2 Joy Feedback'),
         
         DeclareLaunchArgument(
-            name='agent',
-            default_value='true',
-            description='Enable Micro-ROS Agent'),
-        
-        DeclareLaunchArgument(
             name='joy_config',
             default_value='ps4',
             description='Joystick Configuration: ps4, stadia, ps3'),
@@ -140,13 +135,4 @@ def generate_launch_description():
                 ('/e_stop', ['/', LaunchConfiguration('namespace'), '/e_stop']),
                 ('/mode', ['/', LaunchConfiguration('namespace'), '/mode'])
             ]),
-
-        Node(
-            condition=IfCondition(LaunchConfiguration('agent')),
-            package='micro_ros_agent',
-            executable='micro_ros_agent',
-            name='micro_ros_agent',
-            output='screen',
-            arguments=['serial', '--dev', LaunchConfiguration("port_addr")]
-        )
     ])
