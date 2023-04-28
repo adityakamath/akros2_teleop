@@ -15,11 +15,12 @@
 #!/usr/bin/env python3
 
 import rclpy
+#from time import time
 from geometry_msgs.msg import Twist
 from akros2_msgs.msg import Mode
 
 class TwistMixer(object):
-    def __init__(self, node, auto_vel_topic='auto_vel', teleop_vel_topic='teleop_vel', mix_vel_topic = 'mix_vel', mode_topic='mode', timer_period=0.01):
+    def __init__(self, node, auto_vel_topic='auto_vel', teleop_vel_topic='teleop_vel', mix_vel_topic = 'mix_vel', mode_topic='mode', timer_period=0.01, teleop_timeout=1.0, auto_timeout=1.0):
         self._node = node
         
         self._teleop = Twist()
@@ -31,6 +32,10 @@ class TwistMixer(object):
         self._zero.linear.x  = 0.0
         self._zero.linear.y  = 0.0
         self._zero.angular.z = 0.0
+        
+        #self._teleop_time = self._auto_time = None
+        #self._teleop_timeout = teleop_timeout
+        #self._auto_timeout = auto_timeout
         
         self._node.create_subscription(Mode, mode_topic, self.cb_mode, 1)
         self._node.create_subscription(Twist, teleop_vel_topic, self.cb_teleop, 1)
@@ -49,20 +54,30 @@ class TwistMixer(object):
         :type msg: Twist
         """
         self._teleop = msg
+        #self._teleop_time = time()
     
     def cb_auto(self, msg):
         """
         :type msg: Twist
         """
         self._auto = msg
+        #self._auto_time = time()
 
     def cb_timer(self):
         if self._mode.estop:
             self._mixed = self._zero
         else:
             if self._mode.auto_t:
+                #if self._auto and (self._auto_time is None or (time() - self._auto_time) <= self._auto_timeout):
+                #    self._mixed = self._auto
+                #else:
+                #    self._mixed = self._zero
                 self._mixed = self._auto if self._auto else self._zero
             else:
+                #if self._teleop and (self._teleop_time is None or (time() - self._teleop_time) <= self._teleop_timeout):
+                #    self._mixed = self._teleop
+                #else:
+                #    self._mixed = self._zero
                 self._mixed = self._teleop if self._teleop else self._zero
 
         self._pub_twist.publish(self._mixed)

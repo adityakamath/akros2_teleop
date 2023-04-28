@@ -31,11 +31,8 @@ def generate_launch_description():
     ds4_twist_config_path = PathJoinSubstitution(
         [FindPackageShare("akros2_drive"), "config", "ds4_twist_params.yaml"])
     
-    twist_mux_topics_config_path = PathJoinSubstitution(
-        [FindPackageShare("akros2_drive"), "config", "twist_mux_topics.yaml"])
-    
-    twist_mux_locks_config_path = PathJoinSubstitution(
-        [FindPackageShare("akros2_drive"), "config", "twist_mux_locks.yaml"])
+    twist_mux_config_path = PathJoinSubstitution(
+        [FindPackageShare("akros2_drive"), "config", "twist_mux_config.yaml"])
     
     joy_twist_config_dynamic_path = [get_package_share_directory('akros2_drive'), 
                                      '/config/', 
@@ -52,11 +49,6 @@ def generate_launch_description():
             name='namespace',
             default_value='drive',
             description='Namespace of the system'),
-        
-        DeclareLaunchArgument(
-            name='port_addr',
-            default_value='/dev/ttyTEENSY',
-            description='Serial port of the microcontroller'),
         
         DeclareLaunchArgument(
             name='twist',
@@ -77,20 +69,18 @@ def generate_launch_description():
             condition=IfCondition(LaunchConfiguration('twist')),
             actions = [
                 Node(
-                    condition=IfCondition(LaunchConfiguration('twist')),
                     package='joy',
                     executable='joy_node',
                     name='joy_node',
                     parameters=[{
                         'dev': '/dev/input/js0',
-                        'deadzone': 0.25,
+                        'deadzone': 0.2,
                         'autorepeat_rate': 0.0,
                     }],
                     arguments=["--ros-args", "--log-level", "ERROR"]
                 ),
 
                 Node(
-                    condition=IfCondition(LaunchConfiguration('twist')),
                     package='teleop_twist_joy',
                     executable='teleop_node',
                     name='joy_teleop',
@@ -114,7 +104,7 @@ def generate_launch_description():
                     package='twist_mux',
                     executable='twist_mux',
                     name='twist_mux',
-                    parameters=[twist_mux_topics_config_path, twist_mux_locks_config_path],
+                    parameters=[twist_mux_config_path],
                     remappings=[
                         ('/e_stop',      ['/', LaunchConfiguration('namespace'), '/e_stop']),
                         ('/mix_vel',     ['/', LaunchConfiguration('namespace'), '/mix_vel']),
