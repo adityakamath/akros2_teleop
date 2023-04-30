@@ -74,8 +74,9 @@ def generate_launch_description():
                     name='joy_node',
                     parameters=[{
                         'dev': '/dev/input/js0',
-                        'deadzone': 0.2,
-                        'autorepeat_rate': 0.0,
+                        'deadzone': 0.1,
+                        'autorepeat_rate': 20.0,
+                        'coalesce_interval': 0.01,
                     }],
                     arguments=["--ros-args", "--log-level", "ERROR"]
                 ),
