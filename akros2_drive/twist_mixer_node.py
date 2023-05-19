@@ -1,4 +1,4 @@
-# Copyright (c) 2022 Aditya Kamath
+# Copyright (c) 2023 Aditya Kamath
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,10 +18,11 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from akros2_msgs.msg import Mode
+from rclpy.executors import ExternalShutdownException
 
 class TwistMixer(Node):
-    def __init__(self):
-        super().__init__('twist_mixer')
+    def __init__(self, node_name='twist_mixer'):
+        super().__init__(node_name)
         
         self.declare_parameter('auto_vel_topic', 'auto_vel')
         self.declare_parameter('teleop_vel_topic', 'teleop_vel')
@@ -54,6 +55,8 @@ class TwistMixer(Node):
                                                 self.get_parameter('mix_vel_buffer').value)
         self.timer = self.create_timer(self.get_parameter('timer_period').value, self.cb_timer)
         
+        self.get_logger().info('Initialized')
+        
     def cb_mode(self, msg):
         """
         :type msg: Mode
@@ -84,7 +87,7 @@ class TwistMixer(Node):
         self._pub_twist.publish(self._mixed)
         
 def main(args=None):
-    rclpy.init()
+    rclpy.init(args=args)
     node = TwistMixer()
     
     try:

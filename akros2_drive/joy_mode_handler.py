@@ -1,4 +1,4 @@
-# Copyright (c) 2022 Aditya Kamath
+# Copyright (c) 2023 Aditya Kamath
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,10 +19,11 @@ from rclpy.node import Node
 from sensor_msgs.msg import Joy
 from akros2_msgs.msg import Mode
 from std_msgs.msg import Bool
+from rclpy.executors import ExternalShutdownException
 
 class JoystickModeHandler(Node):
-    def __init__(self):
-        super().__init__('joy_mode_handler')
+    def __init__(self, node_name='joy_mode_handler'):
+        super().__init__(node_name)
         
         self.declare_parameter('joy_topic', 'joy')
         self.declare_parameter('mode_topic', 'mode')
@@ -45,6 +46,8 @@ class JoystickModeHandler(Node):
                                  self.cb_joy, 1)
         self._pub_mode = self.create_publisher(Mode, self.get_parameter('mode_topic').value, 1)
         self._pub_estop_lock = self.create_publisher(Bool, self.get_parameter('estop_lock_topic').value, 1)
+        
+        self.get_logger().info('Initialized')
 
     def cb_joy(self, msg):
         """
@@ -71,8 +74,8 @@ class JoystickModeHandler(Node):
         
         self._prev = msg
 
-def main():
-    rclpy.init()
+def main(args=None):
+    rclpy.init(args=args)
     node = JoystickModeHandler()
 
     try:

@@ -1,4 +1,4 @@
-# Copyright (c) 2022 Aditya Kamath
+# Copyright (c) 2023 Aditya Kamath
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,19 +43,14 @@ def generate_launch_description():
     
     return LaunchDescription([
         DeclareLaunchArgument(
-            name='namespace',
+            name='ns',
             default_value='drive',
             description='Namespace of the system'),
         
         DeclareLaunchArgument(
-            name='twist',
+            name='twist_joy',
             default_value='true',
             description='Enable Teleop Twist Joy'),
-        
-        DeclareLaunchArgument(
-            name='feedback',
-            default_value='true',
-            description='Enable AKROS2 Joy Feedback'),
         
         DeclareLaunchArgument(
             name='joy_config',
@@ -63,7 +58,7 @@ def generate_launch_description():
             description='Joystick Configuration: ps4, stadia, ps3'),
         
         GroupAction(
-            condition=IfCondition(LaunchConfiguration('twist')),
+            condition=IfCondition(LaunchConfiguration('twist_joy')),
             actions = [
                 Node(
                     package='joy',
@@ -84,43 +79,34 @@ def generate_launch_description():
                     name='joy_teleop',
                     parameters=[joy_twist_config_dynamic_path],
                     remappings=[
-                        ('/cmd_vel', ['/', LaunchConfiguration('namespace'), '/joy_vel'])
+                        ('/cmd_vel', ['/', LaunchConfiguration('ns'), '/joy_vel'])
                     ]),
-                
-                Node(
-                    package='akros2_drive',
-                    executable='twist_mixer',
-                    name='twist_mixer',
-                    remappings=[
-                        (['/teleop_vel'], ['/', LaunchConfiguration('namespace'), '/joy_vel']),
-                        (['/auto_vel'], ['/', LaunchConfiguration('namespace'), '/nav_vel']),
-                        (['/mix_vel'], ['/', LaunchConfiguration('namespace'), '/mix_vel']),
-                        (['/mode'], ['/', LaunchConfiguration('namespace'), '/mode'])
-                    ]),
-        
-                Node(
-                    package='twist_mux',
-                    executable='twist_mux',
-                    name='twist_mux',
-                    parameters=[twist_mux_config_path],
-                    remappings=[
-                        ('/e_stop',      ['/', LaunchConfiguration('namespace'), '/e_stop']),
-                        ('/mix_vel',     ['/', LaunchConfiguration('namespace'), '/mix_vel']),
-                        ('/key_vel',     ['/', LaunchConfiguration('namespace'), '/key_vel']),
-                        ('/cmd_vel_out', ['/', LaunchConfiguration('namespace'), '/cmd_vel'])
-                    ])
             ]),
-
+        
         Node(
-            condition=IfCondition(LaunchConfiguration('feedback')),
             package='akros2_drive',
-            executable='joy_mode_handler',
-            name='joy_mode_handler',
+            executable='drive_node',
+            output='screen',
             parameters=[[TextSubstitution(text=os.path.join(get_package_share_directory('akros2_drive'), 'config', '')), 
                                                    LaunchConfiguration('joy_config'), 
                                                    TextSubstitution(text='_mode_config.yaml')]],
             remappings=[
-                ('/e_stop', ['/', LaunchConfiguration('namespace'), '/e_stop']),
-                ('/mode', ['/', LaunchConfiguration('namespace'), '/mode'])
+                ('/teleop_vel', ['/', LaunchConfiguration('ns'), '/joy_vel']),
+                ('/auto_vel', ['/', LaunchConfiguration('ns'), '/nav_vel']),
+                ('/mix_vel', ['/', LaunchConfiguration('ns'), '/mix_vel']),
+                ('/e_stop', ['/', LaunchConfiguration('ns'), '/e_stop']),
+                ('/mode', ['/', LaunchConfiguration('ns'), '/mode']),
+            ]),
+        
+        Node(
+            package='twist_mux',
+            executable='twist_mux',
+            name='twist_mux',
+            parameters=[twist_mux_config_path],
+            remappings=[
+                ('/e_stop',      ['/', LaunchConfiguration('ns'), '/e_stop']),
+                ('/mix_vel',     ['/', LaunchConfiguration('ns'), '/mix_vel']),
+                ('/key_vel',     ['/', LaunchConfiguration('ns'), '/key_vel']),
+                ('/cmd_vel_out', ['/', LaunchConfiguration('ns'), '/cmd_vel'])
             ]),
     ])
