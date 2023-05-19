@@ -25,7 +25,7 @@ setup(
     entry_points={
         'console_scripts': [
             'twist_mixer = akros2_drive.twist_mixer_node:main',
-            'joy_feedback = akros2_drive.joy_feedback_node:main',
+            'joy_mode_handler = akros2_drive.joy_mode_handler:main',
         ],
     },
 )

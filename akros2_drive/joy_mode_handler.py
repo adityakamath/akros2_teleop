@@ -15,31 +15,36 @@
 #!/usr/bin/env python3
 
 import rclpy
+from rclpy.node import Node
 from sensor_msgs.msg import Joy
 from akros2_msgs.msg import Mode
 from std_msgs.msg import Bool
 
-class JoystickHandler(object):
-    def __init__(self, node, joy_topic='joy', mode_topic='mode', estop_lock_topic='e_stop'):
-        self._node = node
+class JoystickModeHandler(Node):
+    def __init__(self):
+        super().__init__('joy_mode_handler')
+        
+        self.declare_parameter('joy_topic', 'joy')
+        self.declare_parameter('mode_topic', 'mode')
+        self.declare_parameter('estop_lock_topic', 'e_stop')
+        self.declare_parameter('joystick', 'ps4')
+        self.declare_parameter('estop_button', 9)  # defaults to PS4:L1 and Stadia:LJoy button
+        self.declare_parameter('auto_button', 0) # defaults to PS4:X and Stadia:A
         
         self._prev = None
-
         self._mode = Mode()
         self._mode.estop  = False
         self._mode.auto_t = False
         
-        self._node.declare_parameter('joystick', 'ps4')
-        self._node.declare_parameter('estop_button', 9)  # defaults to PS4:L1 and Stadia:LJoy button
-        self._node.declare_parameter('auto_button', 0) # defaults to PS4:X and Stadia:A
+        self._joystick = self.get_parameter('joystick').value
+        self._estop_button = self.get_parameter('estop_button').value
+        self._auto_button = self.get_parameter('auto_button').value
         
-        self._joystick = self._node.get_parameter('joystick').value
-        self._estop_button = self._node.get_parameter('estop_button').value
-        self._auto_button = self._node.get_parameter('auto_button').value
-        
-        self._node.create_subscription(Joy, joy_topic, self.cb_joy, 1)
-        self._pub_mode = self._node.create_publisher(Mode, mode_topic, 1)
-        self._pub_estop_lock = self._node.create_publisher(Bool, estop_lock_topic, 1)
+        self.create_subscription(Joy, 
+                                 self.get_parameter('joy_topic').value, 
+                                 self.cb_joy, 1)
+        self._pub_mode = self.create_publisher(Mode, self.get_parameter('mode_topic').value, 1)
+        self._pub_estop_lock = self.create_publisher(Bool, self.get_parameter('estop_lock_topic').value, 1)
 
     def cb_joy(self, msg):
         """
@@ -68,11 +73,16 @@ class JoystickHandler(object):
 
 def main():
     rclpy.init()
-    node = rclpy.create_node("joystick_mode")
-    JoystickHandler(node)
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
+    node = JoystickModeHandler()
+
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    except ExternalShutdownException:
+        sys.exit(1)
+    finally:
+        node.destroy_node()
 
 if __name__ == '__main__':
     main()

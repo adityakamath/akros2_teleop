@@ -28,9 +28,6 @@ def generate_launch_description():
     teleop_twist_joy_launch_path = PathJoinSubstitution(
         [FindPackageShare('teleop_twist_joy'), 'launch', 'teleop-launch.py'])
     
-    ds4_twist_config_path = PathJoinSubstitution(
-        [FindPackageShare("akros2_drive"), "config", "ds4_twist_params.yaml"])
-    
     twist_mux_config_path = PathJoinSubstitution(
         [FindPackageShare("akros2_drive"), "config", "twist_mux_config.yaml"])
     
@@ -117,8 +114,8 @@ def generate_launch_description():
         Node(
             condition=IfCondition(LaunchConfiguration('feedback')),
             package='akros2_drive',
-            executable='joy_feedback',
-            name='joy_feedback',
+            executable='joy_mode_handler',
+            name='joy_mode_handler',
             parameters=[[TextSubstitution(text=os.path.join(get_package_share_directory('akros2_drive'), 'config', '')), 
                                                    LaunchConfiguration('joy_config'), 
                                                    TextSubstitution(text='_mode_config.yaml')]],
