@@ -93,20 +93,21 @@ def generate_launch_description():
             remappings=[
                 ('/teleop_vel', ['/', LaunchConfiguration('ns'), '/joy_vel']),
                 ('/auto_vel', ['/', LaunchConfiguration('ns'), '/nav_vel']),
-                ('/mix_vel', ['/', LaunchConfiguration('ns'), '/mix_vel']),
+                ('/mix_vel', ['/', LaunchConfiguration('ns'), '/cmd_vel']),
                 ('/e_stop', ['/', LaunchConfiguration('ns'), '/e_stop']),
                 ('/mode', ['/', LaunchConfiguration('ns'), '/mode']),
             ]),
-        
-        Node(
-            package='twist_mux',
-            executable='twist_mux',
-            name='twist_mux',
-            parameters=[twist_mux_config_path],
-            remappings=[
-                ('/e_stop',      ['/', LaunchConfiguration('ns'), '/e_stop']),
-                ('/mix_vel',     ['/', LaunchConfiguration('ns'), '/mix_vel']),
-                ('/key_vel',     ['/', LaunchConfiguration('ns'), '/key_vel']),
-                ('/cmd_vel_out', ['/', LaunchConfiguration('ns'), '/cmd_vel'])
-            ]),
+
+        #If twist_mux is used, change mapping of /mix_vel above (drive_node) from /cmd_vel to /mix_vel 
+        #Node(
+        #    package='twist_mux',
+        #    executable='twist_mux',
+        #    name='twist_mux',
+        #    parameters=[twist_mux_config_path],
+        #    remappings=[
+        #        ('/e_stop',      ['/', LaunchConfiguration('ns'), '/e_stop']),
+        #        ('/mix_vel',     ['/', LaunchConfiguration('ns'), '/mix_vel']),
+        #        ('/key_vel',     ['/', LaunchConfiguration('ns'), '/key_vel']),
+        #        ('/cmd_vel_out', ['/', LaunchConfiguration('ns'), '/cmd_vel'])
+        #    ]),
     ])
