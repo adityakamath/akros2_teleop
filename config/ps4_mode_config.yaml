@@ -1,4 +1,4 @@
-joy_feedback:
+joy_mode_handler:
   ros__parameters:
     joystick: ps4
     estop_button: 9 # L1 shoulder button
