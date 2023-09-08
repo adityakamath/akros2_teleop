@@ -50,7 +50,7 @@ def generate_launch_description():
         
         DeclareLaunchArgument(
             name='twist_joy',
-            default_value='true',
+            default_value='True',
             description='Enable Teleop Twist Joy'),
         
         DeclareLaunchArgument(
