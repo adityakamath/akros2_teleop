@@ -23,19 +23,19 @@ def main(args=None):
     rclpy.init(args=args)
     
     try:
-        joy_node_handler = JoystickModeHandler(node_name='joy_mode_handler')
+        joy_mode_handler = JoystickModeHandler(node_name='joy_mode_handler')
         twist_mixer = TwistMixer(node_name='twist_mixer')
 
         executor = SingleThreadedExecutor()
         executor.add_node(twist_mixer)
-        executor.add_node(joy_node_handler)
+        executor.add_node(joy_mode_handler)
 
         try:
             executor.spin()
         finally:
             executor.shutdown()
             twist_mixer.destroy_node()
-            joy_node_handler.destroy_node()
+            joy_mode_handler.destroy_node()
     except KeyboardInterrupt:
         pass
     except ExternalShutdownException:
