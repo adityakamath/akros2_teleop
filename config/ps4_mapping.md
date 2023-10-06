@@ -1,4 +1,4 @@
-Playstation 4 Controller:
+PlayStation 4 Controller:
 * axes:
   * x: 0 # left joystick left-right
   * y: 1 # left joystick up-down
