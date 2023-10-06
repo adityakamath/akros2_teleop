@@ -56,7 +56,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             name='joy_config',
             default_value='ps4',
-            description='Joystick Configuration: ps4, stadia, ps3'),
+            description='Joystick Configuration: ps4, stadia, ps3, sn30pro[x, y, b]'),
         
         GroupAction(
             condition=IfCondition(LaunchConfiguration('twist_joy')),
