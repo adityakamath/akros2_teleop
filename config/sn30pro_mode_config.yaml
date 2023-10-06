@@ -1,13 +1,12 @@
 joy_mode_handler:
   ros__parameters:
-    joystick: sn30prox
+    joystick: sn30pro
     estop_button: 4 # L1 shoulder button
     auto_button: 1 # A button
     
 #    8BitDo SN30 Pro 
 #    WARNING: X-Y and A-B buttons are flipped compared to an Xbox controller
 #
-#    sn30prox
 #    Windows Mode - ctrl+X (haptic feedback available, recommended):
 #      axes:
 #        x: 0 # left joystick left-right
@@ -31,7 +30,6 @@ joy_mode_handler:
 #        rjoy: 9
 #        home: 10 # right corner button
 # 
-#    sn30proy
 #    Switch Mode - ctrl+Y (no haptic feedback available, recommended):
 #      axes:
 #        x: 0 # left joystick left-right
@@ -58,7 +56,6 @@ joy_mode_handler:
 #        mystery1: 14
 #        mystery2: 15
 #
-#    sn30prob
 #    Android Mode - ctrl+B (no haptic feedback available - not recommended):
 #      axes:
 #        x: 0 # left joystick left-right
