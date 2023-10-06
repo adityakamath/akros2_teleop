@@ -21,7 +21,6 @@ joy_teleop:
 #    8BitDo SN30 Pro 
 #    WARNING: X-Y and A-B buttons are flipped compared to an Xbox controller
 #
-#    sn30prox
 #    Windows Mode - ctrl+X (haptic feedback available, recommended):
 #      axes:
 #        x: 0 # left joystick left-right
@@ -45,7 +44,6 @@ joy_teleop:
 #        rjoy: 9
 #        home: 10 # right corner button
 # 
-#    sn30proy
 #    Switch Mode - ctrl+Y (no haptic feedback available, recommended):
 #      axes:
 #        x: 0 # left joystick left-right
@@ -72,7 +70,6 @@ joy_teleop:
 #        mystery1: 14
 #        mystery2: 15
 #
-#    sn30prob
 #    Android Mode - ctrl+B (no haptic feedback available - not recommended):
 #      axes:
 #        x: 0 # left joystick left-right
@@ -101,5 +98,4 @@ joy_teleop:
 #        rjoy: 14
 #        mystery5: 15
 #
-#    MacOS Mode - ctrl+A (does not work - not recommended):
-
+#    MacOS Mode - ctrl+A (does not work - not recommended)
