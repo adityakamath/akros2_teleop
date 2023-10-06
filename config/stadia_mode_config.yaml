@@ -22,7 +22,7 @@ joy_mode_handler:
 #        l1: 4
 #        r1: 5
 #        options: 6
-#       menu: 7
+#        menu: 7
 #        stadia: 8
 #        ljoy: 9
 #        rjoy: 10
