@@ -6,8 +6,6 @@
   <description>Nodes to drive the AKROS2 robot</description>
   <maintainer email="adityakamath@live.com">Aditya Kamath</maintainer>
   <license>Apache License 2.0</license>
-    
-  <exec_depend>ros2launch</exec_depend>
   
   <depend>rclpy</depend>
   <depend>sensor_msgs</depend>
