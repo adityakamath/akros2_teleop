@@ -27,7 +27,6 @@ class JoystickModeHandler(Node):
         
         self.declare_parameter('joy_topic', 'joy')
         self.declare_parameter('mode_topic', 'mode')
-        self.declare_parameter('estop_lock_topic', 'e_stop')
         self.declare_parameter('joystick', 'ps4')
         self.declare_parameter('estop_button', 9)  # defaults to PS4:L1 and Stadia:LJoy button
         self.declare_parameter('auto_button', 0) # defaults to PS4:X and Stadia:A
@@ -36,8 +35,7 @@ class JoystickModeHandler(Node):
         self._mode = Mode()
         self._mode.estop  = False
         self._mode.auto_t = False
-        
-        self._joystick = self.get_parameter('joystick').value
+
         self._estop_button = self.get_parameter('estop_button').value
         self._auto_button = self.get_parameter('auto_button').value
         
@@ -45,7 +43,6 @@ class JoystickModeHandler(Node):
                                  self.get_parameter('joy_topic').value, 
                                  self.cb_joy, 1)
         self._pub_mode = self.create_publisher(Mode, self.get_parameter('mode_topic').value, 1)
-        self._pub_estop_lock = self.create_publisher(Bool, self.get_parameter('estop_lock_topic').value, 1)
         
         self.get_logger().info('Initialized')
 
@@ -65,11 +62,7 @@ class JoystickModeHandler(Node):
         
         if self._mode.estop: # STOP! - red
             self._mode.auto_t = False
-        
-        estop_lock = Bool()
-        estop_lock.data = self._mode.estop
-        
-        self._pub_estop_lock.publish(estop_lock)
+
         self._pub_mode.publish(self._mode)
         
         self._prev = msg

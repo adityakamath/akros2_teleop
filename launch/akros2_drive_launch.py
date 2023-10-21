@@ -27,10 +27,6 @@ def generate_launch_description():
     
     teleop_twist_joy_launch_path = PathJoinSubstitution(
         [FindPackageShare('teleop_twist_joy'), 'launch', 'teleop-launch.py'])
-
-    ## Twist Mux disabled for now, see below
-    #twist_mux_config_path = PathJoinSubstitution(
-    #    [FindPackageShare("akros2_drive"), "config", "twist_mux_config.yaml"])
     
     joy_twist_config_dynamic_path = [get_package_share_directory('akros2_drive'), 
                                      '/config/', 
@@ -93,20 +89,6 @@ def generate_launch_description():
                 ('/teleop_vel', ['/', LaunchConfiguration('ns'), '/joy_vel']),
                 ('/auto_vel', ['/', LaunchConfiguration('ns'), '/nav_vel']),
                 ('/mix_vel', ['/', LaunchConfiguration('ns'), '/cmd_vel']),
-                ('/e_stop', ['/', LaunchConfiguration('ns'), '/e_stop']),
                 ('/mode', ['/', LaunchConfiguration('ns'), '/mode']),
             ]),
-
-        ## If twist_mux is used, change mapping of /mix_vel above (drive_node) from /cmd_vel to /mix_vel 
-        #Node(
-        #    package='twist_mux',
-        #    executable='twist_mux',
-        #    name='twist_mux',
-        #    parameters=[twist_mux_config_path],
-        #    remappings=[
-        #        ('/e_stop',      ['/', LaunchConfiguration('ns'), '/e_stop']),
-        #        ('/mix_vel',     ['/', LaunchConfiguration('ns'), '/mix_vel']),
-        #        ('/key_vel',     ['/', LaunchConfiguration('ns'), '/key_vel']),
-        #        ('/cmd_vel_out', ['/', LaunchConfiguration('ns'), '/cmd_vel'])
-        #    ]),
     ])
