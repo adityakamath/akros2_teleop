@@ -1,0 +1,5 @@
+joy_mode_handler:
+  ros__parameters:
+    joystick: ps3
+    estop_button: 5 # R1 Shoulder button
+    auto_button: 0 # A button
