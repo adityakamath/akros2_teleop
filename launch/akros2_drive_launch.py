@@ -15,19 +15,14 @@
 import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, GroupAction
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, TextSubstitution
-from launch.conditions import IfCondition
+from launch.substitutions import LaunchConfiguration
+from launch.conditions import IfCondition, UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
-from launch_ros.substitutions import FindPackageShare
 from ament_index_python.packages import get_package_share_directory
 import logging
 
 def generate_launch_description():
-    
-    teleop_twist_joy_launch_path = PathJoinSubstitution(
-        [FindPackageShare('teleop_twist_joy'), 'launch', 'teleop-launch.py'])
-    
     joy_twist_config_dynamic_path = [get_package_share_directory('akros2_drive'), 
                                      '/config/', 
                                      LaunchConfiguration('joy_config'), 
@@ -40,18 +35,23 @@ def generate_launch_description():
     
     return LaunchDescription([
         DeclareLaunchArgument(
-            name='ns',
-            default_value='drive',
-            description='Namespace of the system'),
+            name='remote',
+            default_value='False',
+            description='Launch only Joy Mode Handler (if Drive is enabled). If False, launches both Twist Mixer and Joy Mode Handler nodes'),
+        
+        DeclareLaunchArgument(
+            name='drive',
+            default_value='True',
+            description='Enable Drive'),
         
         DeclareLaunchArgument(
             name='twist_joy',
             default_value='True',
-            description='Enable Teleop Twist Joy'),
+            description='Enable Joy and Teleop Twist Joy nodes'),
         
         DeclareLaunchArgument(
             name='joy_config',
-            default_value='ps3',
+            default_value='sn30pro',
             description='Joystick Configuration: ps3/sixaxis, ps4, stadia, sn30pro'),
         
         GroupAction(
@@ -80,15 +80,31 @@ def generate_launch_description():
                     ]),
             ]),
         
-        Node(
-            package='akros2_drive',
-            executable='drive_node',
-            output='screen',
-            parameters=[joy_mode_config_dynamic_path],
-            remappings=[
-                ('/teleop_vel', ['/', LaunchConfiguration('ns'), '/joy_vel']),
-                ('/auto_vel', ['/', LaunchConfiguration('ns'), '/nav_vel']),
-                ('/mix_vel', ['/', LaunchConfiguration('ns'), '/cmd_vel']),
-                ('/mode', ['/', LaunchConfiguration('ns'), '/mode']),
+        GroupAction(
+            condition=IfCondition(LaunchConfiguration('drive')),
+            actions = [                
+                Node(
+                    condition=UnlessCondition(LaunchConfiguration('remote')),
+                    package='akros2_drive',
+                    executable='drive_node',
+                    output='screen',
+                    parameters=[joy_mode_config_dynamic_path],
+                    remappings=[
+                        ('/teleop_vel', '/drive/joy_vel'),
+                        ('/auto_vel', '/drive/nav_vel'),
+                        ('/mix_vel', '/drive/cmd_vel'),
+                        ('/mode', '/drive/mode'),
+                    ]),
+        
+                Node(
+                    condition=IfCondition(LaunchConfiguration('remote')),
+                    package='akros2_drive',
+                    executable='joy_mode_handler',
+                    name='mode_handler',
+                    output='screen',
+                    parameters=[joy_mode_config_dynamic_path],
+                    remappings=[
+                        ('/mode', '/drive/mode'),
+                    ]),
             ]),
     ])

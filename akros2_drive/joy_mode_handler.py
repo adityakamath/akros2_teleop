@@ -27,7 +27,6 @@ class JoystickModeHandler(Node):
         
         self.declare_parameter('joy_topic', 'joy')
         self.declare_parameter('mode_topic', 'mode')
-        self.declare_parameter('joystick', 'ps4')
         self.declare_parameter('estop_button', 9)  # defaults to PS4:L1 and Stadia:LJoy button
         self.declare_parameter('auto_button', 0) # defaults to PS4:X and Stadia:A
         
