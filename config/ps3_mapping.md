@@ -9,10 +9,10 @@ PlayStation 3 Controller:
   * left_right: 6 # right side buttons
   * up_down: 7 # right side buttons
 * buttons:
-  * cross: 0 # A 
-  * circle: 1 # B
-  * square: 2 # X
-  * triangle: 3 # Y
+  * A: 0
+  * B: 1
+  * X: 2
+  * Y: 3
   * l1: 4 # does not work
   * r1: 5
   * select: 6
