@@ -76,7 +76,7 @@ def generate_launch_description():
                     name='joy_teleop',
                     parameters=[joy_twist_config_dynamic_path],
                     remappings=[
-                        ('/cmd_vel', '/joy_vel')
+                        ('/cmd_vel', '/drive/cmd_vel') # change from /drive/cmd_vel to /joy_vel once micro-ros remapping and twist_mixer issues are fixed
                     ]),
             ]),
         
@@ -93,6 +93,7 @@ def generate_launch_description():
                         ('/teleop_vel', '/joy_vel'),
                         ('/auto_vel', '/nav_vel'),
                         ('/mix_vel', '/cmd_vel'),
+                        ('/mode', '/drive/mode'), # temporary, to be removed once micro-ros remapping is done
                     ]),
         
                 Node(
@@ -101,6 +102,9 @@ def generate_launch_description():
                     executable='joy_mode_handler',
                     name='mode_handler',
                     output='screen',
-                    parameters=[joy_mode_config_dynamic_path]),
+                    parameters=[joy_mode_config_dynamic_path],
+                    remappings=[
+                        ('/mode', '/drive/mode'), # temporary, to be removed once micro-ros remapping is done
+                    ]),
             ]),
     ])
