@@ -76,7 +76,7 @@ def generate_launch_description():
                     name='joy_teleop',
                     parameters=[joy_twist_config_dynamic_path],
                     remappings=[
-                        ('/cmd_vel', '/drive/joy_vel')
+                        ('/cmd_vel', '/joy_vel')
                     ]),
             ]),
         
@@ -90,10 +90,9 @@ def generate_launch_description():
                     output='screen',
                     parameters=[joy_mode_config_dynamic_path],
                     remappings=[
-                        ('/teleop_vel', '/drive/joy_vel'),
-                        ('/auto_vel', '/drive/nav_vel'),
-                        ('/mix_vel', '/drive/cmd_vel'),
-                        ('/mode', '/drive/mode'),
+                        ('/teleop_vel', '/joy_vel'),
+                        ('/auto_vel', '/nav_vel'),
+                        ('/mix_vel', '/cmd_vel'),
                     ]),
         
                 Node(
@@ -102,9 +101,6 @@ def generate_launch_description():
                     executable='joy_mode_handler',
                     name='mode_handler',
                     output='screen',
-                    parameters=[joy_mode_config_dynamic_path],
-                    remappings=[
-                        ('/mode', '/drive/mode'),
-                    ]),
+                    parameters=[joy_mode_config_dynamic_path]),
             ]),
     ])
