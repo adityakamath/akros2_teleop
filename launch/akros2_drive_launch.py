@@ -76,7 +76,7 @@ def generate_launch_description():
                     name='joy_teleop',
                     parameters=[joy_twist_config_dynamic_path],
                     remappings=[
-                        ('/cmd_vel', ['/', LaunchConfiguration('ns'), '/joy_vel'])
+                        ('/cmd_vel', '/drive/joy_vel')
                     ]),
             ]),
         
