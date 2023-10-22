@@ -42,7 +42,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             name='drive',
             default_value='True',
-            description='Enable Drive'),
+            description='Enable Drive Nodes - Twist Mixer, Joy Mode Handler'),
         
         DeclareLaunchArgument(
             name='twist_joy',
