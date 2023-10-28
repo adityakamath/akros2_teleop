@@ -1,6 +1,10 @@
 8BitDo SN30 Pro 
 *WARNING: X-Y and A-B buttons are flipped compared to an Xbox controller*
 
+Android Mode is recommended for Raspberry Pi devices (Some connectivity issues observed in Windows Mode)
+Windows Mode is recommended for all other devices
+Switch Mode should be used only if the Android and Windows modes don't work
+
 Windows Mode - ctrl+X (haptic feedback available, recommended):
 * axes:
   * x: 0 # left joystick left-right
@@ -24,7 +28,35 @@ Windows Mode - ctrl+X (haptic feedback available, recommended):
   * rjoy: 9
   * home: 10 # right corner button
 
-Switch Mode - ctrl+Y (no haptic feedback available, recommended):
+Android Mode - ctrl+B (no haptic feedback available - recommended, especially for RPi):
+* axes:
+  * x: 0 # left joystick left-right
+  * y: 1 # left joystick up-down
+  * z: 2 # right joystick left-right
+  * rz: 3 # right joystick up-down
+  * r2: 4 # pressed: -1.0, not pressed: 1.0
+  * l2: 5 # pressed: -1.0, not pressed: 1.0
+  * left_right: 6 # dpad left-right
+  * up_down: 7 # dpad up-down
+* buttons:
+  * a: 0
+  * b: 1
+  * mystery1: 2
+  * x: 3
+  * y: 4
+  * mystery2: 5
+  * l1: 6
+  * r1: 7
+  * mystery3: 8
+  * mystery4: 9
+  * select: 10
+  * start: 11
+  * home: 12 # right corner button
+  * ljoy: 13
+  * rjoy: 14
+  * mystery5: 15
+ 
+Switch Mode - ctrl+Y (no haptic feedback available, not recommended):
 * axes:
   * x: 0 # left joystick left-right
   * y: 1 # left joystick up-down
@@ -49,33 +81,5 @@ Switch Mode - ctrl+Y (no haptic feedback available, recommended):
   * star: 13 # left corner button
   * mystery1: 14
   * mystery2: 15
-
-Android Mode - ctrl+B (no haptic feedback available - not recommended):
-* axes:
-  * x: 0 # left joystick left-right
-  * y: 1 # left joystick up-down
-  * z: 3 # right joystick left-right
-  * rz: 4 # right joystick up-down
-  * r2: 5 # pressed: -1.0, not pressed: 1.0
-  * l2: 2 # pressed: -1.0, not pressed: 1.0
-  * left_right: 6 # dpad left-right
-  * up_down: 7 # dpad up-down
-* buttons:
-  * a: 0
-  * b: 1
-  * mystery1: 2
-  * x: 3
-  * y: 4
-  * mystery2: 5
-  * l1: 6
-  * r1: 7
-  * mystery3: 8
-  * mystery4: 9
-  * select: 10
-  * start: 11
-  * home: 12 # right corner button
-  * ljoy: 13
-  * rjoy: 14
-  * mystery5: 15
 
 MacOS Mode - ctrl+A (does not work - not recommended)
