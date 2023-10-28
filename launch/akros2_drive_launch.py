@@ -100,7 +100,7 @@ def generate_launch_description():
                     condition=IfCondition(LaunchConfiguration('remote')),
                     package='akros2_drive',
                     executable='joy_mode_handler',
-                    name='mode_handler',
+                    name='joy_mode_handler',
                     output='screen',
                     parameters=[joy_mode_config_dynamic_path],
                     remappings=[

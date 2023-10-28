@@ -5,10 +5,10 @@ Windows Mode - ctrl+X (haptic feedback available, recommended):
 * axes:
   * x: 0 # left joystick left-right
   * y: 1 # left joystick up-down
-  * l2: 2 # pressed: 1.0, not pressed: -1.0
+  * l2: 2 # pressed: 1.0, not pressed: 1.0
   * z: 3 # right joystick left-right
   * rz: 4 # right joystick up-down
-  * r2: 5 # pressed: 1.0, not pressed: -1.0
+  * r2: 5 # pressed: 1.0, not pressed: 1.0
   * left_right: 6 # dpad left-right
   * up_down: 7 # dpad up-down
 * buttons:
@@ -56,8 +56,8 @@ Android Mode - ctrl+B (no haptic feedback available - not recommended):
   * y: 1 # left joystick up-down
   * z: 3 # right joystick left-right
   * rz: 4 # right joystick up-down
-  * r2: 5 # pressed: 1.0, not pressed: -1.0
-  * l2: 2 # pressed: 1.0, not pressed: -1.0
+  * r2: 5 # pressed: -1.0, not pressed: 1.0
+  * l2: 2 # pressed: -1.0, not pressed: 1.0
   * left_right: 6 # dpad left-right
   * up_down: 7 # dpad up-down
 * buttons:

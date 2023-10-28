@@ -6,8 +6,8 @@ PlayStation 3 Controller:
   * rz: 4 # right joystick up-down
   * r2: 5
   * l2: 2
-  * left_right: 6 # right side buttons
-  * up_down: 7 # right side buttons
+  * left_right: 6 # d-pad buttons
+  * up_down: 7 # d-pad buttons
 * buttons:
   * A: 0
   * B: 1

@@ -10,7 +10,7 @@ joy_teleop:
       x: 0.3
       y: 0.225
     axis_angular:
-      yaw: 2
+      yaw: 3
     scale_angular:
       yaw: 1.57
     scale_angular_turbo:
