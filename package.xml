@@ -14,10 +14,8 @@
   <depend>akros2_msgs</depend>
   
   <depend>joy</depend>
-  <depend>teleop_twist_keyboard</depend>
   <depend>teleop_twist_joy</depend>
   <depend>twist_mux</depend>
-  <depend>micro_ros_agent</depend>
   
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
