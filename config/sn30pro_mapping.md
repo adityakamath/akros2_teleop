@@ -47,8 +47,8 @@ Android Mode - ctrl+B (no haptic feedback available - recommended, especially fo
   * mystery2: 5
   * l1: 6
   * r1: 7
-  * l2: 8 # wired mode only
-  * r2: 9 # wired mode only
+  * l2: 8 # wired mode only, shown in bluetooth mode as unpressed
+  * r2: 9 # wired mode only, shown in bluetooth mode as unpressed
   * select: 10
   * start: 11
   * home: 12 # right corner button
