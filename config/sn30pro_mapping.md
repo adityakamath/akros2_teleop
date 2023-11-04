@@ -34,10 +34,10 @@ Android Mode - ctrl+B (no haptic feedback available - recommended, especially fo
   * y: 1 # left joystick up-down
   * z: 2 # right joystick left-right
   * rz: 3 # right joystick up-down
-  * r2: 4 # pressed: -1.0, not pressed: 1.0
-  * l2: 5 # pressed: -1.0, not pressed: 1.0
-  * left_right: 6 # dpad left-right
-  * up_down: 7 # dpad up-down
+  * r2: 4 # pressed: -1.0, not pressed: 1.0 - only in bluetooth mode, not shown in wired mode
+  * l2: 5 # pressed: -1.0, not pressed: 1.0 - only in bluetooth mode, not shown in wired mode
+  * left_right: 6 # dpad left-right, 4 in wired mode
+  * up_down: 7 # dpad up-down, 5 in wired mode
 * buttons:
   * a: 0
   * b: 1
@@ -47,8 +47,8 @@ Android Mode - ctrl+B (no haptic feedback available - recommended, especially fo
   * mystery2: 5
   * l1: 6
   * r1: 7
-  * mystery3: 8
-  * mystery4: 9
+  * l2: 8 # wired mode only
+  * r2: 9 # wired mode only
   * select: 10
   * start: 11
   * home: 12 # right corner button
