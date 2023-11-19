@@ -37,20 +37,20 @@ def generate_launch_description():
             default_value='sn30pro',
             description='Joystick Configuration: ps3/sixaxis, ps4, stadia, sn30pro'),
         
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(joy_launch_path),
-            condition=IfCondition(LaunchConfiguration('joy')),
-            launch_arguments={'joy_config': LaunchConfiguration('joy_config')}.items()),
-        
         Node(
             package='akros2_drive',
             executable='twist_mixer',
             name='twist_mixer',
             output='screen',
             remappings=[
-                ('/teleop_vel', '/joy_vel'), # change from /drive/cmd_vel to  /joy_vel once micro-ros remapping and twist_mixer issues are fixed
+                ('/teleop_vel', '/drive/cmd_vel'), # change from /drive/cmd_vel to /joy_vel once twist_mixer issues are fixed
                 ('/auto_vel', '/nav_vel'),
-                ('/mix_vel', '/drive/cmd_vel'), # change from /cmd_vel to  /drive/cmd_vel once twist_mixer issues are fixed
+                ('/mix_vel', '/cmd_vel'), # change from /cmd_vel to  /drive/cmd_vel once twist_mixer issues are fixed
                 ('/mode', '/drive/mode'), # temporary, to be removed once micro-ros remapping is done
             ]),
+        
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(joy_launch_path),
+            condition=IfCondition(LaunchConfiguration('joy')),
+            launch_arguments={'joy_config': LaunchConfiguration('joy_config')}.items()),
     ])
