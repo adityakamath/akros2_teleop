@@ -14,3 +14,6 @@ This is the main launch file and has the following launch arguments:
 
 ## joy_launch.py
 This launch files launches the ```joy```, ```teleop_twist_joy``` and ```joy_mode_handler``` nodes and uses the ```joy_config``` launch argument to configure the controller. This node can be launched individually or from within ```drive_launch.py```.
+
+## drive_node_launch.py
+This launch file runs the ```drive_node``` executable as well as related packages - ```joy``` and ```teleop_twist_joy```. The only launch argument needed is the ```joy_config```, which is used to select a controller configuration.
