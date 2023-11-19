@@ -55,7 +55,7 @@ def generate_launch_description():
             name='joy_teleop',
             parameters=[joy_twist_config_dynamic_path],
             remappings=[
-                ('/cmd_vel', '/joy_vel') # change from /drive/cmd_vel to /joy_vel once micro-ros remapping and twist_mixer issues are fixed
+                ('/cmd_vel', '/drive/cmd_vel') # change from /drive/cmd_vel to /joy_vel once micro-ros remapping and twist_mixer issues are fixed
             ]),
                 
         Node(
