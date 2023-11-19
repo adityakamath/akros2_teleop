@@ -20,17 +20,11 @@ from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-from ament_index_python.packages import get_package_share_directory
 import logging
 
 def generate_launch_description():
     joy_launch_path = PathJoinSubstitution(
         [FindPackageShare('akros2_drive'), 'launch', 'joy_launch.py'])
-    
-    joy_mode_config_dynamic_path = [get_package_share_directory('akros2_drive'), 
-                                    '/config/', 
-                                    LaunchConfiguration('joy_config'), 
-                                    '_mode_config.yaml']
     
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -51,8 +45,8 @@ def generate_launch_description():
         Node(
             package='akros2_drive',
             executable='twist_mixer',
+            name='twist_mixer',
             output='screen',
-            parameters=[joy_mode_config_dynamic_path],
             remappings=[
                 ('/teleop_vel', 'drive/cmd_vel'), # change from /drive/cmd_vel to  /joy_vel once micro-ros remapping and twist_mixer issues are fixed
                 ('/auto_vel', '/nav_vel'),

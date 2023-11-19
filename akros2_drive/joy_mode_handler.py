@@ -25,8 +25,6 @@ class JoystickModeHandler(Node):
     def __init__(self, node_name='joy_mode_handler'):
         super().__init__(node_name)
         
-        self.declare_parameter('joy_topic', 'joy')
-        self.declare_parameter('mode_topic', 'mode')
         self.declare_parameter('estop_button', 9)  # defaults to PS4:L1 and Stadia:LJoy button
         self.declare_parameter('auto_button', 0) # defaults to PS4:X and Stadia:A
         
@@ -38,10 +36,8 @@ class JoystickModeHandler(Node):
         self._estop_button = self.get_parameter('estop_button').value
         self._auto_button = self.get_parameter('auto_button').value
         
-        self.create_subscription(Joy, 
-                                 self.get_parameter('joy_topic').value, 
-                                 self.cb_joy, 1)
-        self._pub_mode = self.create_publisher(Mode, self.get_parameter('mode_topic').value, 1)
+        self.create_subscription(Joy, 'joy', self.cb_joy, 1)
+        self._pub_mode = self.create_publisher(Mode, 'mode', 1)
         
         self.get_logger().info('Initialized')
 

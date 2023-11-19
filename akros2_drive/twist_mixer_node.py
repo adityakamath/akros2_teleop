@@ -23,13 +23,7 @@ from rclpy.executors import ExternalShutdownException
 class TwistMixer(Node):
     def __init__(self, node_name='twist_mixer'):
         super().__init__(node_name)
-        
-        self.declare_parameter('auto_vel_topic', 'auto_vel')
-        self.declare_parameter('teleop_vel_topic', 'teleop_vel')
-        self.declare_parameter('mix_vel_topic', 'mix_vel')
-        self.declare_parameter('mode_topic', 'mode')
         self.declare_parameter('timer_period', 0.01)
-        self.declare_parameter('mix_vel_buffer', 1)
         
         self._teleop = Twist()
         self._auto   = Twist()
@@ -41,18 +35,10 @@ class TwistMixer(Node):
         self._zero.linear.y  = 0.0
         self._zero.angular.z = 0.0
         
-        self.create_subscription(Mode, 
-                                 self.get_parameter('mode_topic').value, 
-                                 self.cb_mode, 1)
-        self.create_subscription(Twist, 
-                                 self.get_parameter('teleop_vel_topic').value, 
-                                 self.cb_teleop, 1)
-        self.create_subscription(Twist, 
-                                 self.get_parameter('auto_vel_topic').value, 
-                                 self.cb_auto, 1)
-        self._pub_twist = self.create_publisher(Twist, 
-                                                self.get_parameter('mix_vel_topic').value, 
-                                                self.get_parameter('mix_vel_buffer').value)
+        self.create_subscription(Mode, 'mode', self.cb_mode, 1)
+        self.create_subscription(Twist, 'teleop_vel', self.cb_teleop, 1)
+        self.create_subscription(Twist, 'auto_vel', self.cb_auto, 1)
+        self._pub_twist = self.create_publisher(Twist, 'mix_vel', 1)
         self.timer = self.create_timer(self.get_parameter('timer_period').value, self.cb_timer)
         
         self.get_logger().info('Initialized')
