@@ -43,9 +43,9 @@ def generate_launch_description():
             name='twist_mixer',
             output='screen',
             remappings=[
-                ('/teleop_vel', '/drive/cmd_vel'), # change from /drive/cmd_vel to /joy_vel once twist_mixer issues are fixed
+                ('/teleop_vel', '/joy_vel'),
                 ('/auto_vel', '/nav_vel'),
-                ('/mix_vel', '/cmd_vel'), # change from /cmd_vel to  /drive/cmd_vel once twist_mixer issues are fixed
+                ('/mix_vel', '/drive/cmd_vel'), # change from drive/cmd_vel to /cmd_vel once micro-ros remapping is done
                 ('/mode', '/drive/mode'), # temporary, to be removed once micro-ros remapping is done
             ]),
         
