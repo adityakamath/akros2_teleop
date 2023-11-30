@@ -63,8 +63,5 @@ def generate_launch_description():
             executable='joy_mode_handler',
             name='joy_mode_handler',
             output='screen',
-            parameters=[joy_mode_config_dynamic_path],
-            remappings=[
-                ('/mode', '/drive/mode'), # temporary, to be removed once micro-ros remapping is done
-            ]),
+            parameters=[joy_mode_config_dynamic_path]),
     ])

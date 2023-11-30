@@ -66,8 +66,7 @@ def generate_launch_description():
             remappings=[
                 ('/teleop_vel', '/joy_vel'),
                 ('/auto_vel', '/nav_vel'),
-                ('/mix_vel', '/drive/cmd_vel'), # change from drive/cmd_vel to /cmd_vel once micro-ros remapping is done
-                ('/mode', '/drive/mode'), # temporary, to be removed once micro-ros remapping is done
+                ('/mix_vel', '/cmd_vel'),
             ]),
         
     ])
