@@ -82,4 +82,4 @@ Switch Mode - ctrl+Y (no haptic feedback available, not recommended):
   * mystery1: 14
   * mystery2: 15
 
-MacOS Mode - ctrl+A (does not work - not recommended)
+MacOS Mode - ctrl+A (does not work with Linux/Windows - not recommended)
