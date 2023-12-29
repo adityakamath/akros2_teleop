@@ -16,4 +16,4 @@ joy_teleop:
     scale_angular_turbo:
       yaw: 2.0
     require_enable_button: false
-    enable_turbo_button: 10  # R1 shoulder button
+    enable_turbo_button: 5  # R1 shoulder button

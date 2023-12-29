@@ -34,8 +34,8 @@ def generate_launch_description():
         
         DeclareLaunchArgument(
             name='joy_config',
-            default_value='sn30pro',
-            description='Joystick Configuration: ps3/sixaxis, ps4, stadia, sn30pro'),
+            default_value='steamdeck',
+            description='Joystick Configuration: ps4, stadia, sn30pro, steamdeck'),
         
         Node(
             package='akros2_drive',
