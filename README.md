@@ -13,11 +13,4 @@ This is the main launch file that launches the ```drive_node``` executable and `
 * ```joy_config```: Configures joystick mapping: ```ps4``` ([PS4](https://www.playstation.com/nl-nl/accessories/dualshock-4-wireless-controller/), ```stadia``` ([Stadia](https://stadia.google.com/controller/)), ```sn30pro``` ([8BitDo SN30 Pro](https://www.8bitdo.com/sn30-pro-g-classic-or-sn30-pro-sn/), ```steamdeck``` ([Steam Deck](https://store.steampowered.com/steamdeck)) (Default: ```steamdeck```)
 
 ## joy_launch.py
-<<<<<<< Updated upstream
-This launch files launches the ```joy```, ```teleop_twist_joy``` and ```joy_mode_handler``` nodes and uses the ```joy_config``` launch argument to configure the controller. This node can be launched individually or from within ```drive_launch.py```.
-
-## drive_node_launch.py
-This launch file runs the ```drive_node``` executable as well as related packages - ```joy``` and ```teleop_twist_joy```. The only launch argument needed is the ```joy_config```, which is used to select a controller configuration.
-=======
 This launch files launches the ```joy``` and the ```teleop_twist_joy``` nodes and uses the ```joy_config``` launch argument to configure the controller. This node can be launched individually or from within ```drive_launch.py```.
->>>>>>> Stashed changes
