@@ -26,7 +26,7 @@ def main(args=None):
         joy_mode_handler = JoystickModeHandler(node_name='joy_mode_handler')
         twist_mixer = TwistMixer(node_name='twist_mixer')
 
-        executor = SingleThreadedExecutor()
+        executor = MultiThreadedExecutor()
         executor.add_node(twist_mixer)
         executor.add_node(joy_mode_handler)
 
