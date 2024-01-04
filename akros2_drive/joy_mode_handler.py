@@ -25,8 +25,8 @@ class JoystickModeHandler(Node):
     def __init__(self, node_name='joy_mode_handler'):
         super().__init__(node_name)
         
-        self.declare_parameter('estop_button', 9)  # defaults to PS4:L1 and Stadia:LJoy button
-        self.declare_parameter('auto_button', 0) # defaults to PS4:X and Stadia:A
+        self.declare_parameter('estop_button', 4)  # defaults to SixAxis/SteamDeck:L1
+        self.declare_parameter('auto_button', 0) # defaults to SixAxis/SteamDeck:A
         
         self._prev = None
         self._mode = Mode()
