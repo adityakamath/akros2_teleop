@@ -32,6 +32,11 @@ def generate_launch_description():
                                     LaunchConfiguration('joy_config'), 
                                     '_mode_config.yaml']
     
+    twist_mode_config_dynamic_path = [get_package_share_directory('akros2_drive'), 
+                                    '/config/', 
+                                    LaunchConfiguration('joy_config'), 
+                                    '_mode_config.yaml']
+    
     return LaunchDescription([
         DeclareLaunchArgument(
             name='joy',
@@ -43,11 +48,42 @@ def generate_launch_description():
             default_value='steamdeck',
             description='Joystick Configuration: ps4, stadia, sn30pro, steamdeck'),
         
+        #Node(
+        #    package='akros2_drive',
+        #    executable='drive_node',
+        #    output='screen',
+        #    parameters=[joy_mode_config_dynamic_path],
+        #    remappings=[
+        #        ('/teleop_vel', '/joy_vel'),
+        #        ('/auto_vel', '/nav_vel'),
+        #        ('/mix_vel', '/cmd_vel'),
+        #    ]),
+        
+        #Node(
+        #    package='akros2_drive',
+        #    executable='twist_mixer',
+        #    name='twist_mixer',
+        #    output='screen',
+        #    parameters=[{'timer_period': 0.02}],
+        #    remappings=[
+        #        ('/teleop_vel', '/joy_vel'),
+        #        ('/auto_vel', '/nav_vel'),
+        #        ('/mix_vel', '/cmd_vel'),
+        #    ]),
+        
+        #Node(
+        #    package='akros2_drive',
+        #    executable='joy_mode_handler',
+        #    name='joy_mode_handler',
+        #    output='screen',
+        #    parameters=[joy_mode_config_dynamic_path]),
+        
         Node(
             package='akros2_drive',
-            executable='drive_node',
+            executable='twist_mode_handler',
+            name='twist_mode_handler',
             output='screen',
-            parameters=[joy_mode_config_dynamic_path],
+            parameters=[twist_mode_config_dynamic_path],
             remappings=[
                 ('/teleop_vel', '/joy_vel'),
                 ('/auto_vel', '/nav_vel'),

@@ -24,6 +24,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'twist_mode_handler = akros2_drive.twist_mode_handler:main',
             'twist_mixer = akros2_drive.twist_mixer_node:main',
             'joy_mode_handler = akros2_drive.joy_mode_handler:main',
             'drive_node = akros2_drive.drive_node:main',
