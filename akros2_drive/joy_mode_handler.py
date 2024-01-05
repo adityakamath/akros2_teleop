@@ -38,7 +38,7 @@ class JoystickModeHandler(Node):
         
         self.create_subscription(Joy, 'joy', self.cb_joy, 1)
         self._pub_mode = self.create_publisher(Mode, 'mode', 1)
-        
+
         self.get_logger().info('Initialized')
 
     def cb_joy(self, msg):
@@ -55,9 +55,9 @@ class JoystickModeHandler(Node):
         if msg.buttons[self._auto_button] and not self._prev.buttons[self._auto_button]:
             self._mode.auto_t = not self._mode.auto_t
         
-        if self._mode.estop: # STOP! - red
+        if self._mode.estop:
             self._mode.auto_t = False
-
+            
         self._pub_mode.publish(self._mode)
         
         self._prev = msg

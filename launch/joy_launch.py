@@ -26,11 +26,6 @@ def generate_launch_description():
                                      LaunchConfiguration('joy_config'), 
                                      '_twist_config.yaml']
     
-    joy_mode_config_dynamic_path = [get_package_share_directory('akros2_drive'), 
-                                    '/config/', 
-                                    LaunchConfiguration('joy_config'), 
-                                    '_mode_config.yaml']
-    
     return LaunchDescription([
         DeclareLaunchArgument(
             name='joy_config',
@@ -48,13 +43,6 @@ def generate_launch_description():
                 'coalesce_interval': 0.01,
             }],
             arguments=["--ros-args", "--log-level", "ERROR"]),
-        
-        Node(
-            package='akros2_drive',
-            executable='joy_mode_handler',
-            name='joy_mode_handler',
-            output='screen',
-            parameters=[joy_mode_config_dynamic_path]),
 
         Node(
             package='teleop_twist_joy',

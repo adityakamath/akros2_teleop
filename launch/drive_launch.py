@@ -16,7 +16,7 @@ import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -26,6 +26,11 @@ import logging
 def generate_launch_description():
     joy_launch_path = PathJoinSubstitution(
         [FindPackageShare('akros2_drive'), 'launch', 'joy_launch.py'])
+    
+    joy_mode_config_dynamic_path = [get_package_share_directory('akros2_drive'), 
+                                    '/config/', 
+                                    LaunchConfiguration('joy_config'), 
+                                    '_mode_config.yaml']
     
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -38,7 +43,26 @@ def generate_launch_description():
             default_value='steamdeck',
             description='Joystick Configuration: ps4, stadia, sn30pro, steamdeck'),
         
+        DeclareLaunchArgument(
+            name='executor',
+            default_value='True',
+            description='If True, run multi-threaded executor. If False, run both nodes separately'),
+        
         Node(
+            condition=IfCondition(LaunchConfiguration('executor')),
+            package='akros2_drive',
+            executable='drive_node',
+            output='screen',
+            parameters=[{'timer_period': 0.02}, joy_mode_config_dynamic_path],
+            remappings=[
+                ('/teleop_vel', '/joy_vel'),
+                ('/auto_vel', '/nav_vel'),
+                ('/mix_vel', '/cmd_vel'),
+            ]),
+        
+        
+        Node(
+            condition=UnlessCondition(LaunchConfiguration('executor')),
             package='akros2_drive',
             executable='twist_mixer',
             name='twist_mixer',
@@ -49,6 +73,14 @@ def generate_launch_description():
                 ('/auto_vel', '/nav_vel'),
                 ('/mix_vel', '/cmd_vel'),
             ]),
+        
+        Node(
+            condition=UnlessCondition(LaunchConfiguration('executor')),
+            package='akros2_drive',
+            executable='joy_mode_handler',
+            name='joy_mode_handler',
+            output='screen',
+            parameters=[joy_mode_config_dynamic_path]),
         
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(joy_launch_path),
