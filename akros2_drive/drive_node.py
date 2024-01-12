@@ -21,7 +21,7 @@ from akros2_drive.twist_mixer_node import TwistMixer
 
 def main(args=None):
     rclpy.init(args=args)
-    
+
     try:
         joy_mode_handler = JoystickModeHandler(node_name='joy_mode_handler')
         twist_mixer = TwistMixer(node_name='twist_mixer')

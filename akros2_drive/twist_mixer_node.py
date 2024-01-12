@@ -24,37 +24,37 @@ class TwistMixer(Node):
     def __init__(self, node_name='twist_mixer'):
         super().__init__(node_name)
         self.declare_parameter('timer_period', 0.01)
-        
+
         self._teleop = Twist()
         self._auto   = Twist()
         self._mixed  = Twist()
         self._mode   = Mode()
-        
+
         self._zero   = Twist()
         self._zero.linear.x  = 0.0
         self._zero.linear.y  = 0.0
         self._zero.angular.z = 0.0
-        
+
         self.create_subscription(Mode, 'mode', self.cb_mode, 1)
         self.create_subscription(Twist, 'teleop_vel', self.cb_teleop, 1)
         self.create_subscription(Twist, 'auto_vel', self.cb_auto, 1)
         self._pub_twist = self.create_publisher(Twist, 'mix_vel', 1)
         self.timer = self.create_timer(self.get_parameter('timer_period').value, self.cb_timer)
-        
+
         self.get_logger().info('Initialized')
-        
+
     def cb_mode(self, msg):
         """
         :type msg: Mode
         """
         self._mode = msg
-        
+
     def cb_teleop(self, msg):
         """
         :type msg: Twist
         """
         self._teleop = msg
-    
+
     def cb_auto(self, msg):
         """
         :type msg: Twist
@@ -71,11 +71,11 @@ class TwistMixer(Node):
                 self._mixed = self._teleop if self._teleop else self._zero
 
         self._pub_twist.publish(self._mixed)
-        
+
 def main(args=None):
     rclpy.init(args=args)
     node = TwistMixer()
-    
+
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:

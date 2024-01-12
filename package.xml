@@ -6,16 +6,16 @@
   <description>Nodes to drive the AKROS2 robot</description>
   <maintainer email="adityakamath@live.com">Aditya Kamath</maintainer>
   <license>Apache License 2.0</license>
-  
+
   <depend>rclpy</depend>
   <depend>sensor_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>std_msgs</depend>
   <depend>akros2_msgs</depend>
-  
+
   <depend>joy</depend>
   <depend>teleop_twist_joy</depend>
-  
+
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>

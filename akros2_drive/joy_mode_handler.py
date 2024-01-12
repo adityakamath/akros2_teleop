@@ -24,10 +24,10 @@ from rclpy.executors import ExternalShutdownException
 class JoystickModeHandler(Node):
     def __init__(self, node_name='joy_mode_handler'):
         super().__init__(node_name)
-        
+
         self.declare_parameter('estop_button', 4)  # defaults to SixAxis/SteamDeck:L1
         self.declare_parameter('auto_button', 0) # defaults to SixAxis/SteamDeck:A
-        
+
         self._prev = None
         self._mode = Mode()
         self._mode.estop  = False
@@ -35,7 +35,7 @@ class JoystickModeHandler(Node):
 
         self._estop_button = self.get_parameter('estop_button').value
         self._auto_button = self.get_parameter('auto_button').value
-        
+
         self.create_subscription(Joy, 'joy', self.cb_joy, 1)
         self._pub_mode = self.create_publisher(Mode, 'mode', 1)
 
@@ -48,18 +48,18 @@ class JoystickModeHandler(Node):
         if self._prev is None:
             self._prev = msg
             return
-    
+
         if msg.buttons[self._estop_button] and not self._prev.buttons[self._estop_button]:
             self._mode.estop = not self._mode.estop
-          
+
         if msg.buttons[self._auto_button] and not self._prev.buttons[self._auto_button]:
             self._mode.auto_t = not self._mode.auto_t
-        
+
         if self._mode.estop:
             self._mode.auto_t = False
-            
+
         self._pub_mode.publish(self._mode)
-        
+
         self._prev = msg
 
 def main(args=None):

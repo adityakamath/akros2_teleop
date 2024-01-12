@@ -14,7 +14,7 @@
 
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, GroupAction
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch.conditions import IfCondition, UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -26,28 +26,23 @@ import logging
 def generate_launch_description():
     joy_launch_path = PathJoinSubstitution(
         [FindPackageShare('akros2_drive'), 'launch', 'joy_launch.py'])
-    
-    joy_mode_config_dynamic_path = [get_package_share_directory('akros2_drive'), 
-                                    '/config/', 
-                                    LaunchConfiguration('joy_config'), 
+
+    joy_mode_config_dynamic_path = [get_package_share_directory('akros2_drive'),
+                                    '/config/',
+                                    LaunchConfiguration('joy_config'),
                                     '_mode_config.yaml']
-    
+
     return LaunchDescription([
-        DeclareLaunchArgument(
-            name='joy',
-            default_value='True',
-            description='Enable Joy and Teleop Twist Joy nodes'),
-        
         DeclareLaunchArgument(
             name='joy_config',
             default_value='steamdeck',
-            description='Joystick Configuration: ps4, stadia, sn30pro, steamdeck'),
-        
+            description='Select Controller: ps4 (PS4/DS4), stadia (Google Stadia), sn30pro (8BitDo SN30 Pro), steamdeck (Valve Steam Deck), none (Disabled)'),
+
         DeclareLaunchArgument(
             name='executor',
             default_value='True',
             description='If True, run multi-threaded executor. If False, run both nodes separately'),
-        
+
         Node(
             condition=IfCondition(LaunchConfiguration('executor')),
             package='akros2_drive',
@@ -59,31 +54,29 @@ def generate_launch_description():
                 ('/auto_vel', '/nav_vel'),
                 ('/mix_vel', '/cmd_vel'),
             ]),
-        
-        
-        Node(
+
+        GroupAction(
             condition=UnlessCondition(LaunchConfiguration('executor')),
-            package='akros2_drive',
-            executable='twist_mixer',
-            name='twist_mixer',
-            output='screen',
-            parameters=[{'timer_period': 0.02}],
-            remappings=[
-                ('/teleop_vel', '/joy_vel'),
-                ('/auto_vel', '/nav_vel'),
-                ('/mix_vel', '/cmd_vel'),
+            actions = [
+                Node(
+                    package='akros2_drive',
+                    executable='twist_mixer',
+                    name='twist_mixer',
+                    output='screen',
+                    parameters=[{'timer_period': 0.02}],
+                    remappings=[('/teleop_vel', '/joy_vel'),
+                                ('/auto_vel', '/nav_vel'),
+                                ('/mix_vel', '/cmd_vel')]),
+
+                Node(
+                    package='akros2_drive',
+                    executable='joy_mode_handler',
+                    name='joy_mode_handler',
+                    output='screen',
+                    parameters=[joy_mode_config_dynamic_path]),
             ]),
-        
-        Node(
-            condition=UnlessCondition(LaunchConfiguration('executor')),
-            package='akros2_drive',
-            executable='joy_mode_handler',
-            name='joy_mode_handler',
-            output='screen',
-            parameters=[joy_mode_config_dynamic_path]),
-        
+
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(joy_launch_path),
-            condition=IfCondition(LaunchConfiguration('joy')),
             launch_arguments={'joy_config': LaunchConfiguration('joy_config')}.items()),
     ])
