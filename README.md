@@ -1,5 +1,3 @@
-This repository is archived. The nodes implemented in this repo have been merged into [akros2_base](https://github.com/adityakamath/akros2_base) instead of having a separate package. 
-
 # akros2_drive
 Package to drive the AKROS2 robot.
 
