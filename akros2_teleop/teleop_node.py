@@ -16,8 +16,8 @@ import sys
 import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.executors import MultiThreadedExecutor
-from akros2_drive.joy_mode_handler import JoystickModeHandler
-from akros2_drive.twist_mixer_node import TwistMixer
+from akros2_teleop.joy_mode_handler import JoystickModeHandler
+from akros2_teleop.twist_mixer_node import TwistMixer
 
 def main(args=None):
     rclpy.init(args=args)

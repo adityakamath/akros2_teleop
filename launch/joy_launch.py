@@ -22,7 +22,7 @@ from ament_index_python.packages import get_package_share_directory
 import logging
 
 def generate_launch_description():
-    joy_twist_config_dynamic_path = [get_package_share_directory('akros2_drive'),
+    joy_twist_config_dynamic_path = [get_package_share_directory('akros2_teleop'),
                                      '/config/',
                                      LaunchConfiguration('joy_config'),
                                      '_twist_config.yaml']

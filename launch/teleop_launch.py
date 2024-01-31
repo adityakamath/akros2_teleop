@@ -25,9 +25,9 @@ import logging
 
 def generate_launch_description():
     joy_launch_path = PathJoinSubstitution(
-        [FindPackageShare('akros2_drive'), 'launch', 'joy_launch.py'])
+        [FindPackageShare('akros2_teleop'), 'launch', 'joy_launch.py'])
 
-    joy_mode_config_dynamic_path = [get_package_share_directory('akros2_drive'),
+    joy_mode_config_dynamic_path = [get_package_share_directory('akros2_teleop'),
                                     '/config/',
                                     LaunchConfiguration('joy_config'),
                                     '_mode_config.yaml']
@@ -45,8 +45,8 @@ def generate_launch_description():
 
         Node(
             condition=IfCondition(LaunchConfiguration('executor')),
-            package='akros2_drive',
-            executable='drive_node',
+            package='akros2_teleop',
+            executable='teleop_node',
             output='screen',
             parameters=[{'timer_period': 0.02}, joy_mode_config_dynamic_path],
             remappings=[
@@ -59,7 +59,7 @@ def generate_launch_description():
             condition=UnlessCondition(LaunchConfiguration('executor')),
             actions = [
                 Node(
-                    package='akros2_drive',
+                    package='akros2_teleop',
                     executable='twist_mixer',
                     name='twist_mixer',
                     output='screen',
@@ -69,7 +69,7 @@ def generate_launch_description():
                                 ('/mix_vel', '/cmd_vel')]),
 
                 Node(
-                    package='akros2_drive',
+                    package='akros2_teleop',
                     executable='joy_mode_handler',
                     name='joy_mode_handler',
                     output='screen',
