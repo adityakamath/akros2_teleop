@@ -24,9 +24,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'twist_mixer = akros2_drive.twist_mixer_node:main',
-            'joy_mode_handler = akros2_drive.joy_mode_handler:main',
-            'teleop_node = akros2_drive.teleop_node:main',
+            'twist_mixer = akros2_teleop.twist_mixer_node:main',
+            'joy_mode_handler = akros2_teleop.joy_mode_handler:main',
+            'teleop_node = akros2_teleop.teleop_node:main',
         ],
     },
 )
