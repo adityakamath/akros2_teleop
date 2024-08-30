@@ -1,4 +1,7 @@
 # akros2_drive
+![](https://img.shields.io/badge/ROS%202%20Galactic-Ubuntu%2020.04-blue) ![GitHub License](https://img.shields.io/github/license/adityakamath/akros2_teleop)
+ ![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/kamathsblog)
+ 
 Package to drive the AKROS2 robot
 
 * Uses the [ds4_driver](https://github.com/naoki-mizuno/ds4_driver) package with nodes to publish the status of the PS4 controller's buttons/joysticks ```ds4_driver```, and publishes Twist messages based on user-defined configuration ```ds4_twist```.
