@@ -1,4 +1,7 @@
 # akros2_teleop
+![](https://img.shields.io/badge/ROS%202%20Humble-Ubuntu%2022.04-blue) ![GitHub License](https://img.shields.io/github/license/adityakamath/akros2_teleop)
+ ![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/kamathsblog)
+ 
 Package to teleoperate the AKROS2 robot.
 
 * Uses the [joy](https://github.com/adityakamath/joystick_drivers/tree/ros2/joy) node with the [teleop_twist_joy](https://github.com/ros2/teleop_twist_joy) package to publish the status of the controller's buttons/joysticks, and Twist messages based on user-defined configuration in the config directory. The configuration currently supports [PS4](https://www.playstation.com/nl-nl/accessories/dualshock-4-wireless-controller/), [Stadia](https://stadia.google.com/controller/), [8BitDo SN30 Pro](https://www.8bitdo.com/sn30-pro-g-classic-or-sn30-pro-sn/) and [Steam Deck](https://store.steampowered.com/steamdeck) controllers. Similarly, mappings and mode/twist config files for other controllers can also be made. Then, the ```joy_config``` launch argument needs to be updated accordingly.
